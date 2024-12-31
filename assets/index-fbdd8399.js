@@ -1,0 +1,1 @@
+import{_ as o}from"./index-bee416d0.js";import{M as t,e as n,o as _,G as s,j as a}from"./element-plus-6129b320.js";const r={class:"report-container"},c={__name:"index",setup(p){return t(()=>{console.log("Report index mounted")}),(d,i)=>{const e=n("router-view");return _(),s("div",r,[a(e)])}}},u=o(c,[["__scopeId","data-v-353a1a00"]]);export{u as default};
