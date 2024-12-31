@@ -2,7 +2,6 @@
   <el-container class="layout-container">
     <el-aside width="220px" class="aside-menu">
       <div class="logo-container">
-        <img src="../assets/logo.png" alt="Logo" class="logo" />
         <span class="logo-text">安全管理系统</span>
       </div>
       <div class="custom-menu">

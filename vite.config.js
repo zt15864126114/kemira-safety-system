@@ -1,8 +1,10 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/kemira-safety-system/',
   plugins: [vue()],
   server: {
     port: 5173,
@@ -10,7 +12,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': '/src'
+      '@': path.resolve(__dirname, 'src'),
     }
   },
   optimizeDeps: {
@@ -18,7 +20,16 @@ export default defineConfig({
   },
   build: {
     commonjsOptions: {
-      include: [/echarts/]
+      include: [/dayjs/, /node_modules/],
+      transformMixedEsModules: true
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'element-plus': ['element-plus'],
+          'dayjs': ['dayjs']
+        }
+      }
     }
   }
 })

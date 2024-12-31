@@ -7,7 +7,7 @@
     </div>
     <el-card class="login-card">
       <div class="login-header">
-        <img src="../assets/logo.png" alt="Logo" class="logo" />
+<!--        <img src="../assets/logo.png" alt="Logo" class="logo" />-->
         <h2>凯米拉天成万丰化学品</h2>
         <h3>安全管理系统</h3>
       </div>
