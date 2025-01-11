@@ -9,9 +9,5 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src')
     }
-  },
-  build: {
-    outDir: 'dist', // 可选：指定构建输出目录
-    assetsDir: 'assets', // 可选：指定资源文件目录
   }
 }) 
