@@ -127,17 +127,17 @@ const quickAccess = [
     type: 'danger'
   },
   {
-    title: '数据分析',
-    description: '设备运行数据统计分析',
+    title: '巡检管理',
+    description: '巡检统计',
     icon: DataLine,
-    path: '/analysis',
+    path: '/inspection',
     type: 'primary'
   },
   {
-    title: '系统设置',
-    description: '系统参数和权限配置',
+    title: '报表统计',
+    description: '报表自定义生成与导出',
     icon: Setting,
-    path: '/settings',
+    path: '/reports',
     type: 'info'
   }
 ]
