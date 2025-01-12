@@ -32,8 +32,14 @@ const generateAlertData = (count: number): Alert[] => {
   ]
   
   const operators = [
-    '张工程', '李维修', '王管理', '赵技术', 
-    '陈操作', '刘检修', '孙维护', '周工艺'
+    '张建国', // 高级工程师
+    '李明华', // 维修技师
+    '王志强', // 生产主管
+    '赵德明', // 技术主管
+    '陈学文', // 操作班长
+    '刘伟东', // 设备维护
+    '吴国庆', // 工艺工程师
+    '周长江'  // 质检主管
   ]
 
   return Array.from({ length: count }, (_, index) => {
@@ -172,14 +178,14 @@ export const fetchAlertDetail = async (id: number): Promise<Alert> => {
 const generateHandleRecords = (alertId: number, status: AlertStatus, createTime: string): HandleRecord[] => {
   const records: HandleRecord[] = []
   const operators = [
-    { name: '张工程', role: '设备工程师' },
-    { name: '李维修', role: '维修技师' },
-    { name: '王管理', role: '安全主管' },
-    { name: '赵技术', role: '技术专家' },
-    { name: '陈操作', role: '操作员' },
-    { name: '刘检修', role: '检修员' },
-    { name: '孙维护', role: '维护工程师' },
-    { name: '周工艺', role: '工艺工程师' }
+    { name: '张志明', role: '设备工程师' },
+    { name: '李国强', role: '维修技师' },
+    { name: '王建华', role: '安全主管' },
+    { name: '赵学文', role: '技术专家' },
+    { name: '陈德军', role: '操作员' },
+    { name: '刘海峰', role: '检修员' },
+    { name: '孙伟东', role: '维护工程师' },
+    { name: '周明亮', role: '工艺工程师' }
   ]
 
   const baseTime = new Date(createTime)
