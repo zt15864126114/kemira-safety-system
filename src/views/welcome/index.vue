@@ -145,7 +145,7 @@ const quickAccess = [
 // 系统信息
 const systemInfo = ref([
   { label: '系统版本', value: 'V2.1.0' },
-  { label: '上次更新', value: '2024-03-20' },
+  { label: '上次更新', value: '2025-01-08' },
   { label: '运行时间', value: '180天' },
   { label: '在线用户', value: '12人' },
   { label: '数据库状态', value: '正常' },
@@ -157,28 +157,28 @@ const notices = ref([
   {
     id: 1,
     title: '系统将于本周日进行例行维护',
-    time: '2024-03-20',
+    time: '2025-01-03',
     type: 'warning',
     tag: '维护'
   },
   {
     id: 2,
     title: '新增设备数据分析模块',
-    time: '2024-03-19',
+    time: '2024-12-13',
     type: 'success',
     tag: '更新'
   },
   {
     id: 3,
     title: '关于加强设备维护管理的通知',
-    time: '2024-03-18',
+    time: '2024-12-10',
     type: 'info',
     tag: '通知'
   },
   {
     id: 4,
     title: '预警规则配置指南发布',
-    time: '2024-03-17',
+    time: '2024-12-05',
     type: 'primary',
     tag: '指南'
   }

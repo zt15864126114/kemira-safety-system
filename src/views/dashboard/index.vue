@@ -161,7 +161,7 @@ const recentAlerts = ref([
     id: 1,
     title: '温度超标警告',
     description: '储存区A温度超过阈值（30℃）',
-    time: '2024-03-20 10:30:00',
+    time: '2025-01-13 10:30:00',
     level: 'warning',
     location: '化学品储存区A'
   },
@@ -169,7 +169,7 @@ const recentAlerts = ref([
     id: 2,
     title: '压力异常报警',
     description: '生产线2号压力异常',
-    time: '2024-03-20 09:15:00',
+    time: '2025-01-12 09:15:00',
     level: 'danger',
     location: '生产车间B'
   }
@@ -178,17 +178,17 @@ const recentAlerts = ref([
 // 待处理事项
 const todoList = ref([
   {
-    time: '2024-03-20 11:00',
+    time: '2025-01-13 11:00',
     task: '巡检任务-储存区日常检查',
     priority: '高'
   },
   {
-    time: '2024-03-20 14:00',
+    time: '2025-01-12 14:00',
     task: '设备维护-定期检修',
     priority: '中'
   },
   {
-    time: '2024-03-20 16:00',
+    time: '2025-01-12 16:00',
     task: '安全培训-新员工培训',
     priority: '低'
   }
