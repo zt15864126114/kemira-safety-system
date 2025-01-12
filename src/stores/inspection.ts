@@ -1,18 +1,12 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
+import { generateMockTasks } from '@/utils/mockInspectionData'
+import dayjs from 'dayjs'
+import isBetween from 'dayjs/plugin/isBetween'
+import type { Task } from '@/types/inspection'
 
-export interface Task {
-  taskNo: string
-  area: string
-  inspector: string
-  startTime: string
-  endTime: string
-  status: string
-  progress: number
-  content?: string
-  remark?: string
-}
+dayjs.extend(isBetween)
 
 export interface InspectionRecord {
   id: number
@@ -34,328 +28,8 @@ export interface AbnormalRecord {
   handleResult?: string
 }
 
-// 修改初始测试数据，确保与选择器中的值完全一致
-const initialTasks: Task[] = [
-  {
-    taskNo: 'JX202403180001',
-    area: '化学品储存区A',
-    inspector: '张明',
-    startTime: '2024-03-18 08:00:00',
-    endTime: '2024-03-18 17:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '日常安全巡检',
-    remark: '无异常'
-  },
-  {
-    taskNo: 'JX202403180002',
-    area: '生产车间B',
-    inspector: '李伟',
-    startTime: '2024-03-18 09:00:00',
-    endTime: '2024-03-18 18:00:00',
-    status: '进行中',
-    progress: 60,
-    content: '设备运行状态检查',
-    remark: '2号生产线需要维护'
-  },
-  {
-    taskNo: 'JX202403180003',
-    area: '仓储区C',
-    inspector: '王强',
-    startTime: '2024-03-18 10:00:00',
-    endTime: '2024-03-18 19:00:00',
-    status: '待执行',
-    progress: 0,
-    content: '库存安全检查',
-    remark: ''
-  },
-  {
-    taskNo: 'JX202403170001',
-    area: '化学品储存区A',
-    inspector: '刘洋',
-    startTime: '2024-03-17 08:00:00',
-    endTime: '2024-03-17 17:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '危险品存储检查',
-    remark: '已完成整改'
-  },
-  {
-    taskNo: 'JX202403170002',
-    area: '生产车间B',
-    inspector: '陈勇',
-    startTime: '2024-03-17 09:00:00',
-    endTime: '2024-03-17 18:00:00',
-    status: '已超时',
-    progress: 80,
-    content: '设备维护检查',
-    remark: '需要更换零件'
-  },
-  {
-    taskNo: 'JX202403160001',
-    area: '仓储区C',
-    inspector: '赵静',
-    startTime: '2024-03-16 08:00:00',
-    endTime: '2024-03-16 17:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '货物堆放检查',
-    remark: '已整理完成'
-  },
-  {
-    taskNo: 'JX202403160002',
-    area: '化学品储存区A',
-    inspector: '孙磊',
-    startTime: '2024-03-16 09:00:00',
-    endTime: '2024-03-16 18:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '危险品泄漏检查',
-    remark: '防泄漏设施完好'
-  },
-  {
-    taskNo: 'JX202403150001',
-    area: '生产车间B',
-    inspector: '周涛',
-    startTime: '2024-03-15 08:00:00',
-    endTime: '2024-03-15 17:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '设备维护检查',
-    remark: '已更换滤芯'
-  },
-  {
-    taskNo: 'JX202403150002',
-    area: '仓储区C',
-    inspector: '吴婷',
-    startTime: '2024-03-15 09:00:00',
-    endTime: '2024-03-15 18:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '货物堆放检查',
-    remark: '已整理货架'
-  },
-  {
-    taskNo: 'JX202403140001',
-    area: '化学品储存区A',
-    inspector: '郑阳',
-    startTime: '2024-03-14 08:00:00',
-    endTime: '2024-03-14 17:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '通风系统检查',
-    remark: '通风正常'
-  },
-  {
-    taskNo: 'JX202403140002',
-    area: '生产车间B',
-    inspector: '杨帆',
-    startTime: '2024-03-14 09:00:00',
-    endTime: '2024-03-14 18:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '设备维护检查',
-    remark: '已更换滤芯'
-  },
-  {
-    taskNo: 'JX202403130001',
-    area: '仓储区C',
-    inspector: '黄晓明',
-    startTime: '2024-03-13 08:00:00',
-    endTime: '2024-03-13 17:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '货物堆放检查',
-    remark: '已整理货架'
-  },
-  {
-    taskNo: 'JX202403130002',
-    area: '化学品储存区A',
-    inspector: '马超',
-    startTime: '2024-03-13 09:00:00',
-    endTime: '2024-03-13 18:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '通风系统检查',
-    remark: '通风正常'
-  },
-  {
-    taskNo: 'JX202403120001',
-    area: '生产车间B',
-    inspector: '徐亮',
-    startTime: '2024-03-12 08:00:00',
-    endTime: '2024-03-12 17:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '安全生产检查',
-    remark: '已补充防护用品'
-  },
-  {
-    taskNo: 'JX202403120002',
-    area: '仓储区C',
-    inspector: '朱峰',
-    startTime: '2024-03-12 09:00:00',
-    endTime: '2024-03-12 18:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '仓库环境检查',
-    remark: '温湿度正常'
-  },
-  {
-    taskNo: 'JX202403110001',
-    area: '化学品储存区A',
-    inspector: '韩雪',
-    startTime: '2024-03-11 08:00:00',
-    endTime: '2024-03-11 17:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '化学品标签检查',
-    remark: '标签完整清晰'
-  },
-  {
-    taskNo: 'JX202403110002',
-    area: '生产车间B',
-    inspector: '方明',
-    startTime: '2024-03-11 09:00:00',
-    endTime: '2024-03-11 18:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '机械设备检查',
-    remark: '传动装置正常'
-  },
-  {
-    taskNo: 'JX202403100001',
-    area: '仓储区C',
-    inspector: '董莉',
-    startTime: '2024-03-10 08:00:00',
-    endTime: '2024-03-10 17:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '应急通道检查',
-    remark: '通道畅通'
-  },
-  {
-    taskNo: 'JX202403100002',
-    area: '化学品储存区A',
-    inspector: '谢峰',
-    startTime: '2024-03-10 09:00:00',
-    endTime: '2024-03-10 18:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '防护设施检查',
-    remark: '防护设施完好'
-  },
-  {
-    taskNo: 'JX202403090001',
-    area: '生产车间B',
-    inspector: '罗静',
-    startTime: '2024-03-09 08:00:00',
-    endTime: '2024-03-09 17:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '噪音检测',
-    remark: '噪音达标'
-  },
-  {
-    taskNo: 'JX202403090002',
-    area: '仓储区C',
-    inspector: '唐军',
-    startTime: '2024-03-09 09:00:00',
-    endTime: '2024-03-09 18:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '货物包装检查',
-    remark: '包装完整'
-  },
-  {
-    taskNo: 'JX202403080001',
-    area: '化学品储存区A',
-    inspector: '邓超',
-    startTime: '2024-03-08 08:00:00',
-    endTime: '2024-03-08 17:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '泄漏应急演练',
-    remark: '演练完成'
-  },
-  {
-    taskNo: 'JX202403080002',
-    area: '生产车间B',
-    inspector: '范丽',
-    startTime: '2024-03-08 09:00:00',
-    endTime: '2024-03-08 18:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '工具检查',
-    remark: '工具完备'
-  },
-  {
-    taskNo: 'JX202403070001',
-    area: '仓储区C',
-    inspector: '蒋勇',
-    startTime: '2024-03-07 08:00:00',
-    endTime: '2024-03-07 17:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '照明系统检查',
-    remark: '照明正常'
-  },
-  {
-    taskNo: 'JX202403070002',
-    area: '化学品储存区A',
-    inspector: '魏明',
-    startTime: '2024-03-07 09:00:00',
-    endTime: '2024-03-07 18:00:00',
-    status: '已完成',
-    progress: 100,
-    content: '安全警示检查',
-    remark: '警示标识完整'
-  },
-  {
-    taskNo: 'JX202403190001',
-    area: '生产车间B',
-    inspector: '韩雪',
-    startTime: '2024-03-19 08:00:00',
-    endTime: '2024-03-19 17:00:00',
-    status: '待执行',
-    progress: 0,
-    content: '设备润滑检查',
-    remark: ''
-  },
-  {
-    taskNo: 'JX202403190002',
-    area: '仓储区C',
-    inspector: '方明',
-    startTime: '2024-03-19 09:00:00',
-    endTime: '2024-03-19 18:00:00',
-    status: '待执行',
-    progress: 0,
-    content: '消防通道检查',
-    remark: ''
-  },
-  {
-    taskNo: 'JX202403190003',
-    area: '化学品储存区A',
-    inspector: '董莉',
-    startTime: '2024-03-19 10:00:00',
-    endTime: '2024-03-19 19:00:00',
-    status: '待执行',
-    progress: 0,
-    content: '应急设备检查',
-    remark: ''
-  },
-  {
-    taskNo: 'JX202403190004',
-    area: '生产车间B',
-    inspector: '谢峰',
-    startTime: '2024-03-19 11:00:00',
-    endTime: '2024-03-19 20:00:00',
-    status: '待执行',
-    progress: 0,
-    content: '安全培训检查',
-    remark: ''
-  }
-]
+// 使用 mock 数据生成器替换原有的静态数据
+const initialTasks = generateMockTasks(100)
 
 export const useInspectionStore = defineStore('inspection', () => {
   // 状态
@@ -377,27 +51,59 @@ export const useInspectionStore = defineStore('inspection', () => {
   const timeoutTasks = computed(() => 
     tasks.value.filter(task => task.status === '已超时').length
   )
+  
+  // 新增：本月任务统计
+  const currentMonthTasks = computed(() => 
+    tasks.value.filter(task => 
+      dayjs(task.startTime).isSame(dayjs(), 'month')
+    ).length
+  )
+
+  // 新增：按区域统计任务数量
+  const tasksByArea = computed(() => {
+    const stats: Record<string, number> = {}
+    tasks.value.forEach(task => {
+      stats[task.area] = (stats[task.area] || 0) + 1
+    })
+    return stats
+  })
 
   // 方法
-  const loadTasks = () => {
+  const loadTasks = (refresh = false) => {
     loading.value = true
     try {
-      // 如果本地存储中没有数据，则使用初始测试数据
       const storedTasks = localStorage.getItem('inspection_tasks')
-      if (!storedTasks) {
-        tasks.value = initialTasks
-        // 保存到本地存储
-        localStorage.setItem('inspection_tasks', JSON.stringify(initialTasks))
+      if (!storedTasks || refresh) {
+        // 如果需要刷新或没有存储数据，则生成新的模拟数据
+        tasks.value = generateMockTasks(100)
+        localStorage.setItem('inspection_tasks', JSON.stringify(tasks.value))
       } else {
         tasks.value = JSON.parse(storedTasks)
       }
     } catch (error) {
       console.error('加载任务失败:', error)
-      // 如果出错，使用初始测试数据
-      tasks.value = initialTasks
+      tasks.value = generateMockTasks(100)
     } finally {
       loading.value = false
     }
+  }
+
+  // 新增：刷新数据方法
+  const refreshTasks = () => {
+    loadTasks(true)
+    ElMessage.success('数据已刷新')
+  }
+
+  // 新增：获取指定日期范围的任务
+  const getTasksByDateRange = (startDate: string, endDate: string) => {
+    return tasks.value.filter(task => 
+      dayjs(task.startTime).isBetween(startDate, endDate, 'day', '[]')
+    )
+  }
+
+  // 新增：获取指定区域的任务
+  const getTasksByArea = (area: string) => {
+    return tasks.value.filter(task => task.area === area)
   }
 
   const saveTasks = () => {
@@ -409,10 +115,15 @@ export const useInspectionStore = defineStore('inspection', () => {
     }
   }
 
-  const addTask = (task: Task) => {
-    tasks.value.unshift(task)
+  const addTask = (task: Omit<Task, 'taskNo'>) => {
+    const newTask: Task = {
+      ...task,
+      taskNo: `JX${dayjs().format('YYYYMMDD')}${Math.floor(Math.random() * 9999).toString().padStart(4, '0')}`
+    }
+    tasks.value.unshift(newTask)
     saveTasks()
     ElMessage.success('创建任务成功')
+    return newTask
   }
 
   const updateTask = (taskNo: string, updates: Partial<Task>) => {
@@ -542,11 +253,16 @@ export const useInspectionStore = defineStore('inspection', () => {
     processingTasks,
     completedTasks,
     timeoutTasks,
+    currentMonthTasks,
+    tasksByArea,
     loadTasks,
+    refreshTasks,
     addTask,
     updateTask,
     deleteTask,
     getTaskById,
+    getTasksByDateRange,
+    getTasksByArea,
     loadRecords,
     addRecord,
     loadAbnormals,

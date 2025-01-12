@@ -69,9 +69,15 @@
               clearable
               style="width: 220px"
             >
-              <el-option label="化学品储存区A" value="area-a" />
+              <!-- <el-option label="化学品储存区A" value="area-a" />
               <el-option label="生产车间B" value="area-b" />
-              <el-option label="仓储区C" value="area-c" />
+              <el-option label="仓储区C" value="area-c" /> -->
+              <el-option
+                  v-for="area in areaOptions"
+                  :key="area.value"
+                  :label="area.label"
+                  :value="area.value"
+              />
             </el-select>
           </el-form-item>
           
@@ -336,7 +342,7 @@ import { Plus, Search, Refresh, Timer, List, User, Warning } from '@element-plus
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useInspectionStore } from '@/stores/inspection'
-import type { Task } from '@/stores/inspection'
+import type { Task } from '@/types/inspection'
 
 const store = useInspectionStore()
 const router = useRouter()

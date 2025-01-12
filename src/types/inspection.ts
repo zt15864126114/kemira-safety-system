@@ -15,4 +15,16 @@ export interface InspectionRecord {
   status: 'normal' | 'warning' | 'danger'
   timestamp: string
   items: InspectionItem[]
+}
+
+export interface Task {
+  taskNo: string
+  area: string
+  inspector: string
+  startTime: string
+  endTime: string
+  status: string
+  progress: number
+  content?: string
+  remark?: string
 } 
