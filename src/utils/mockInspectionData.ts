@@ -155,8 +155,8 @@ const generateTask = (date: string, timeSlot: number): Task => {
     taskNo: generateTaskNo(date),
     area,
     inspector: INSPECTORS[Math.floor(Math.random() * INSPECTORS.length)],
-    startTime: `${date} ${String(startHour).padStart(2, '0')}:00:00`,
-    endTime: `${date} ${String(startHour + 9).padStart(2, '0')}:00:00`,
+    startTime: dayjs(`${date} ${String(startHour).padStart(2, '0')}:00:00`).format('YYYY-MM-DD HH:mm:ss'),
+    endTime: dayjs(`${date} ${String(startHour + 9).padStart(2, '0')}:00:00`).format('YYYY-MM-DD HH:mm:ss'),
     status,
     progress,
     content,
@@ -167,10 +167,11 @@ const generateTask = (date: string, timeSlot: number): Task => {
 // 生成指定数量的任务数据
 export const generateMockTasks = (count: number = 100): Task[] => {
   const tasks: Task[] = []
-  const endDate = dayjs()
-  let currentDate = endDate.subtract(90, 'day')
-  
-  while (tasks.length < count) {
+  const now = dayjs()
+  const threeMonthsAgo = now.subtract(3, 'month')
+  let currentDate = now // 从当前日期开始往前推
+
+  while (tasks.length < count && currentDate.isAfter(threeMonthsAgo)) {
     // 每天生成2-4个任务
     const dailyTaskCount = Math.floor(Math.random() * 3) + 2
     
@@ -178,7 +179,7 @@ export const generateMockTasks = (count: number = 100): Task[] => {
       tasks.push(generateTask(currentDate.format('YYYY-MM-DD'), i))
     }
     
-    currentDate = currentDate.add(1, 'day')
+    currentDate = currentDate.subtract(1, 'day') // 往前推一天
   }
   
   return tasks.sort((a, b) => b.startTime.localeCompare(a.startTime))
