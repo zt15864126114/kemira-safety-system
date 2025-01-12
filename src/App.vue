@@ -77,6 +77,7 @@ const route = useRoute()
 const activeMenu = computed(() => route.path)
 const currentRoute = computed(() => {
   const routeMap: Record<string, string> = {
+    '/welcome': '欢迎',
     '/dashboard': '总览',
     '/monitoring': '实时监控',
     '/inspection': '巡检管理',

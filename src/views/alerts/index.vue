@@ -558,15 +558,15 @@ onMounted(() => {
 const statistics = ref([
   {
     label: '今日预警',
-    value: 128,
-    changeRate: 12.5,
-    trend: 'up',
+    value: 2,
+    changeRate: -3.5,
+    trend: 'down',
     type: 'warning',
     icon: 'Warning'
   },
   {
     label: '待处理',
-    value: 45,
+    value: 15,
     changeRate: -5.2,
     trend: 'down',
     type: 'danger',
