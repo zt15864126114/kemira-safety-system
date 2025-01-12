@@ -121,9 +121,9 @@ const quickAccess = [
   },
   {
     title: '预警管理',
-    description: '处理设备异常和报警信息',
+    description: '处理异常和报警信息',
     icon: Warning,
-    path: '/alert',
+    path: '/alerts',
     type: 'danger'
   },
   {
