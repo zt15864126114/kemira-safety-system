@@ -361,11 +361,118 @@ const alarmFilter = ref<'all' | 'active' | 'resolved'>('all')
 const alarmDetailVisible = ref(false)
 const currentAlarm = ref<AlarmRecord | null>(null)
 
+// 在其他变量声明之前添加
+let resizeHandler: (() => void) | null = null
+
 // 图表实例
 let temperatureChart: echarts.EChartsType | null = null
 let pressureChart: echarts.EChartsType | null = null
 let updateTimer: number | null = null
 let alarmUpdateTimer: number | null = null
+
+// 初始化预设报警记录
+const initAlarmRecords = [
+  {
+    id: 'temp-high-A101-1',
+    time: '2025-01-12T08:15:23',
+    deviceId: 'A-101',
+    deviceName: '双色注塑机-1号',
+    type: 'temperature_high',
+    typeName: '温度过高',
+    value: '198.5',
+    unit: '℃',
+    level: 'error',
+    status: 'active'
+  },
+  {
+    id: 'press-low-B201-1',
+    time: '2025-01-12T08:10:15',
+    deviceId: 'B-201',
+    deviceName: '双螺杆挤出机-1号',
+    type: 'pressure_low',
+    typeName: '压力过低',
+    value: '13.2',
+    unit: 'MPa',
+    level: 'warning',
+    status: 'active'
+  },
+  {
+    id: 'sys-err-C301-1',
+    time: '2025-01-11T08:05:30',
+    deviceId: 'C-301',
+    deviceName: '中空吹塑机-1号',
+    type: 'system_error',
+    typeName: '系统异常',
+    value: 'E002: 温度传感器故障',
+    unit: '',
+    level: 'error',
+    status: 'active'
+  },
+  {
+    id: 'temp-low-A102-1',
+    time: '2025-01-11T07:55:12',
+    deviceId: 'A-102',
+    deviceName: '立式注塑机-2号',
+    type: 'temperature_low',
+    typeName: '温度过低',
+    value: '168.5',
+    unit: '℃',
+    level: 'warning',
+    status: 'resolved'
+  },
+  {
+    id: 'press-high-B202-1',
+    time: '2025-01-11T07:45:33',
+    deviceId: 'B-202',
+    deviceName: '单螺杆挤出机-2号',
+    type: 'pressure_high',
+    typeName: '压力过高',
+    value: '17.8',
+    unit: 'MPa',
+    level: 'error',
+    status: 'resolved'
+  },
+  {
+    id: 'sys-err-A103-1',
+    time: '2025-01-10T07:30:45',
+    deviceId: 'A-103',
+    deviceName: '卧式注塑机-3号',
+    type: 'system_error',
+    typeName: '系统异常',
+    value: 'E004: 伺服电机异常',
+    unit: '',
+    level: 'error',
+    status: 'resolved'
+  },
+  {
+    id: 'temp-high-C302-1',
+    time: '2025-01-09T07:25:18',
+    deviceId: 'C-302',
+    deviceName: '片材吹塑机-2号',
+    type: 'temperature_high',
+    typeName: '温度过高',
+    value: '208.3',
+    unit: '℃',
+    level: 'error',
+    status: 'resolved'
+  },
+  {
+    id: 'press-low-B203-1',
+    time: '2025-01-09T07:15:55',
+    deviceId: 'B-203',
+    deviceName: '造粒挤出机-3号',
+    type: 'pressure_low',
+    typeName: '压力过低',
+    value: '13.1',
+    unit: 'MPa',
+    level: 'warning',
+    status: 'resolved'
+  }
+] as AlarmRecord[]
+
+// 初始化报警记录
+alarmRecords.value = initAlarmRecords
+
 // 计算属性
 const filteredAlarms = computed(() => {
   if (alarmFilter.value === 'all') return alarmRecords.value
