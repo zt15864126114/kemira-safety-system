@@ -45,6 +45,15 @@ const router = createRouter({
         title: '预警处置',
         icon: 'Warning'
       }
+    },
+    {
+      path: '/integration',
+      name: 'Integration',
+      component: () => import('../components/integration/SystemMonitor.vue'),
+      meta: {
+        title: '系统集成',
+        icon: 'Connection'
+      }
     }
   ]
 })

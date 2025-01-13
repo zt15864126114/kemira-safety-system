@@ -27,8 +27,12 @@
           <span>报表统计</span>
         </el-menu-item>
         <el-menu-item index="/alerts">
-          <el-icon><Document /></el-icon>
+          <el-icon><Bell /></el-icon>
           <span>预警处置</span>
+        </el-menu-item>
+        <el-menu-item index="/integration">
+          <el-icon><Connection /></el-icon>
+          <span>系统集成</span>
         </el-menu-item>
       </el-menu>
     </el-aside>
@@ -69,7 +73,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { Odometer, Monitor, List, Document, Expand } from '@element-plus/icons-vue'
+import { Odometer, Monitor, List, Document, Expand,Bell,Connection } from '@element-plus/icons-vue'
 import { defaultLogo, defaultAvatar } from './assets/images'
 
 const route = useRoute()
@@ -81,7 +85,9 @@ const currentRoute = computed(() => {
     '/dashboard': '总览',
     '/monitoring': '实时监控',
     '/inspection': '巡检管理',
-    '/reports': '报表统计'
+    '/reports': '报表统计',
+    '/alerts':'预警处置',
+    '/integration':'系统集成'
   }
   return routeMap[route.path] || '总览'
 })
